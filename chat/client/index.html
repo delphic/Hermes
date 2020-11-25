@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Web Socket Chat</title>
+		<meta charset="utf-8"/>
+		<!-- link rel="stylesheet" href="styles.css" type="text/css" /-->
+		<link rel="icon" href="/images/favicon.png">
+		<script src="chatclient.js"></script>
+		<style>
+body { font-family: sans-serif; }
+div p { margin: 0; padding: 5px; font-size: 14px; }
+#content { overflow-y: scroll; width: 800px; height: 500px; border: 1px solid #DDD; margin: 0.5em 0;}
+#input { width: 800px; }
+.join, .left { color: #666; }
+.error { color: #E11; }
+.chat { color: #111; }
+.selfChat { color: #222; background-color: #F0F0F0 }
+		</style>
+	</head>
+	<body>
+		<h1>Web Socket Chat</h1>
+		<div id="content"></div>
+		<div>
+			<input id="input" text= "text" onkeydown="if (event.key == 'Enter'){ sendMessage(this.value); this.value = '' }" />
+			<input id="button" type="button" value="⏎" onclick="let input = document.getElementById('input'); sendMessage(input.value); input.value = ''" />
+		</div>
+	</body>
+</html>
