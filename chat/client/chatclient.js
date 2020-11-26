@@ -136,7 +136,7 @@ window.onload = (event) => {
 			switch (message.type) {
 				case "left":
 					appendMessage("left", nicks[message.nickIndex] + " left the chat");
-					userList[message.nickIndex] = null;
+					nicks[message.nickIndex] = null;
 					break;
 				case "chat":
 					appendMessage(message.nickIndex == nickIndex ? "selfChat" : "chat", nicks[message.nickIndex] + ": " + message.text);

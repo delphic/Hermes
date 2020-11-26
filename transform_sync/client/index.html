@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Web Socket Transform Sync</title>
+		<meta charset="utf-8"/>
+		<!-- link rel="stylesheet" href="styles.css" type="text/css" /-->
+		<link rel="icon" href="/images/favicon.png">
+		<script src="fury.js"></script>
+		<script src="client.js"></script>
+		<style>
+body { font-family: sans-serif; }
+canvas {
+	height: 768px;
+	width: 768px;
+	image-rendering: crisp-edges; /* Firefox */
+	image-rendering: -moz-crisp-edges;
+	image-rendering: optimizespeed;
+	image-rendering: pixelated; /* Chrome */
+	/* Ideally would just use pixelated, but not implemented across browsers */
+	/* https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering */
+}
+		</style>
+	</head>
+	<body>
+		<h1>Web Socket Transform Sync</h1>
+		<canvas id="fury" width="256" height="256"></canvas>
+	</body>
+</html>
