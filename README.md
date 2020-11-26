@@ -9,4 +9,4 @@ At some point I'll try WebRTC but the complexity overhead is such that I'd rathe
 Simple chat app which uses web sockets to receive user lists and send chat messages, server dispatches join / leave events.
 
 ## Transform Sync
-Simple app for synchronizing a game transform information (position / rotation) over the network using web sockets.   
+Simple app for synchronizing a game transform information over the network using web sockets.   
