@@ -1,5 +1,12 @@
 // websocket transform sync poc
 
+// Known Issue:
+// vec3 JSON.stringify => { "0": 23.0, "1": 34.3, "2": 0 }
+// Which is not ideal really, could investigate sending the raw buffer data
+// see "Working with complex data structures"
+// of https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
+// However should have some profiling in before we try to optimise.
+
 // General Application
 let isDevelopment = true;
 let wsURI = isDevelopment ? "ws://localhost:9001" : "wss://delphic.me.uk:9001";
@@ -154,7 +161,12 @@ let Game = (function(){
 	};
 
 	let setPlayerPosition = function(id, position) {
-		players[id].transform.position = position;
+		var playerPosition = players[id].transform.position;
+		playerPosition[0] = position[0];
+		playerPosition[1] = position[1];
+		playerPosition[2] = position[2];
+		// TODO: Check to see if old code of just setting position to new value
+		// was convering to different object type. Wouldn't want to do that!
 	};
 
 	exports.init = function() {
@@ -258,7 +270,10 @@ let Game = (function(){
 		if (localPlayer.transform.position[0] !== x || localPlayer.transform.position[1] !== y) {
 			// Could try reducing traffic this by only sending input changes w/ current position
 			// Then having others interpolate / and calculate your position
+			// This also reduces reliance on client FPS
 			Connection.send({ type: "position", position: localPlayer.transform.position });
+			// We could / should also throttle the sent updates for constant changes
+			// (e.g. mouse look rotation)
 		}
 
 		scene.render();
