@@ -1,5 +1,7 @@
-// Really basic chat app - it distributes messages sent to all active connections.
-// with info on who sent it + some very basic nick list management and distribution
+// Really basic transform sync
+// it distributes position messages sent to all active connections.
+// with info on who sent it + some very basic player list management and distribution
+// w/ current position
 
 let uWS = require('uWebSockets.js'); // uWebSockets https://github.com/uNetworking/uWebSockets.js
 
