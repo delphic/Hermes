@@ -1,12 +1,5 @@
 // websocket transform sync poc
 
-// Known Issue:
-// vec3 JSON.stringify => { "0": 23.0, "1": 34.3, "2": 0 }
-// Which is not ideal really, could investigate sending the raw buffer data
-// see "Working with complex data structures"
-// of https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
-// However should have some profiling in before we try to optimise.
-
 // General Application
 let isDevelopment = true;
 let wsURI = isDevelopment ? "ws://localhost:9001" : "wss://delphic.me.uk:9001";
@@ -235,6 +228,7 @@ let Game = (function(){
 
 	let time = 0, lastTime = 0;
 	let speed = 32;
+	let arrayCache = [];
 
 	let loop = function() {
 		let elapsed = (Date.now()/1000 - lastTime);
@@ -268,12 +262,26 @@ let Game = (function(){
 		}
 
 		if (localPlayer.transform.position[0] !== x || localPlayer.transform.position[1] !== y) {
+			// vec3 JSON.stringify => { "0": 23.0, "1": 34.3, "2": 0 }
+			// Which is not ideal really, could investigate sending the raw buffer data
+			// for now put it into existing array to at least reduce JSON size
+			// It's likely we'd have to send a raw array buffer and use multiple views
+			// to read it, need to profile speed of these.
+
+			arrayCache[0] = localPlayer.transform.position[0];
+			arrayCache[1] = localPlayer.transform.position[1];
+			arrayCache[2] = localPlayer.transform.position[2];
+
+			Connection.send({ type: "position", position: arrayCache });
 			// Could try reducing traffic this by only sending input changes w/ current position
 			// Then having others interpolate / and calculate your position
 			// This also reduces reliance on client FPS
-			Connection.send({ type: "position", position: localPlayer.transform.position });
+
 			// We could / should also throttle the sent updates for constant changes
 			// (e.g. mouse look rotation)
+
+			// Will also want a concept of relevance on the server for how often it distributes
+			// information on objects which are far away / out of line of sight.
 		}
 
 		scene.render();
